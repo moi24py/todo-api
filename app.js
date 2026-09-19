@@ -129,3 +129,54 @@ app.post('/todos', async(req,res) => {
 });
 
 
+// =================================
+// ROUTE: PUT /todos/:id
+// Updates a todo (eg: mark as completed)
+// =================================
+
+app.put('/todos/:id', async(res,req) => {
+    try {
+        const {id} = req.params;
+        const {title, completed} = req.body;
+
+        if (!id) return res.status(400).json({error: 'ID is required'});
+
+        const existCheck = await pool.query(
+            'SELECT id FROM todos WHERE id = $1',
+            [id]
+        );
+
+        if (existCheck.rows.length === 0) return res.status(404).json( {error: 'Todo not found'} );
+
+        const updateFields = [];
+        const updateValues = [];
+        let paramCount = 1;
+
+        if (title !== undefined) {
+            updateFields.push(`title = $${paramCount}`);
+            updateValues.push(title);
+            paramCount++;
+        }
+
+        if (completed !== undefined) {
+            updateFields.push(`completed = $${paramCount}`);
+            updateValues.push(completed);
+            paramCount++;
+        }
+
+        // Adds the timestamp of the last edit
+        updateFields.push(`updated_at = CURRENT_TIMESTAMP`);
+
+        updateValues.push(id);
+
+        const query = `UPDATE todos SET ${updateFields.join(', ')} WHERE id = $${paramCount} RETURNING * }`;
+
+        const result = await pool.query(query, updateValues);
+
+        // Sends the updated todo
+        res.json(result.rows[0]);
+    } catch (error) {
+        console.error('Error updating todo:', error);
+        res.status(500).json({error: 'Failed to update todo'});
+    }
+})
