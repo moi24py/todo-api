@@ -180,3 +180,30 @@ app.put('/todos/:id', async(res,req) => {
         res.status(500).json({error: 'Failed to update todo'});
     }
 })
+
+
+// =================================
+// ROUTE: DELETE /todos/:id
+// Deletes a todo by ID
+// =================================
+
+app.delete('/todos/:id', async(res, req) => {
+    try {
+        const {id} = req.params;
+        const existCheck = await pool.query(
+            'SELECT id FROM todos WHERE id = $1',
+            [id]
+        );
+
+        if (existCheck.rows.length === 0) {
+            return res.status(404).json( {error: 'Todo not found'} );
+        }
+
+        await pool.query('DELETE FROM todos WHERE id = $1', [id]);
+
+        res.json( {message: 'Todo deleted successfully', id});
+    } catch (error) {
+        console.error('Error deleting todo', error);
+        res.status(500).json( {error: 'Failed to delete todo'} );
+    }
+});
