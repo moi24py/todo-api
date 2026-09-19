@@ -108,7 +108,7 @@ app.get('/todos/:id', async(req,res) => {
 app.post('/todos', async(req,res) => {
     try {
         const {title} = req.body;
-        if (!title || typeof title !== 'strng' || titolo.trim() === '') {
+        if (!title || typeof title !== 'string' || title.trim() === '') {
             return res.status(400).json({
                 error: 'A title is required and must be a string'
             });
@@ -221,7 +221,7 @@ app.use((req,res) => {
 // Run the server
 // =================================
 
-const port = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
     console.log(`Server running on http://localhost:${PORT}`);
     console.log(`Database: ${process.env.DATABASE_URL || 'postgresql://postgres:password@localhost:5432/todo_db'}`);
