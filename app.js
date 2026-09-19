@@ -74,3 +74,29 @@ app.get('/todos', async(req,res) => {
 });
 
 
+// =================================
+// ROUTE: GET /todos/:id
+// Retrieves the todo by ID. Eg: GET /todos/5 → id = '5'
+// =================================
+app.get('/todos/:id', async(req,res) => {
+    try {
+        const {id} = req.params;
+        const result = await pool.query(
+            'SELECT * FROM todos WHERE id = $1', // $1 to avoid SQL injection
+            [id] // the actual value, instead of $1
+        );
+
+        // If the todo doesn't exist
+        if (result.rows.length === 0) {
+            return res.status(404).json( {error: 'Todo not found'});
+        }
+
+        // Sends the TODO as a JSON response
+        res.json(result.rows[0]);
+    } catch (error) {
+        console.error('Error fetching todo:', error);
+        res.status(500).json( {error: 'Failed to fetch todo'} );
+    }
+});
+
+
