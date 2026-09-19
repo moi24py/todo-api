@@ -207,3 +207,13 @@ app.delete('/todos/:id', async(res, req) => {
         res.status(500).json( {error: 'Failed to delete todo'} );
     }
 });
+
+
+// =================================
+// ROUTE: 404 Handler
+// =================================
+app.use((req,res) => {
+    res.status(404).json( {error: 'Endpoint not found'} );
+});
+
+
