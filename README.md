@@ -9,8 +9,8 @@ For this project, I used:
 - PostgreSQL
 - Render
 
-It has been tough and the directory structure it's messy, but I really enjoyed the process!
-I have never used PostgreSQL, Docker and Render, and thanks to a little (lots of!) help from Stackoverflow, LLMs and documentations, I managed to integrate everything. I am definitely going to learn more and make bigger and better projects in the future.
+It has been tough and the directory structure is messy, but I really enjoyed the process!
+I have never used PostgreSQL, Docker and Render, and thanks to a little (lots of!) help from Stackoverflow, LLMs and documentations, I managed to integrate everything. I am definitely going to learn more and make bigger and better projects in the future!
 
 ## Project structure
 ``` bash
