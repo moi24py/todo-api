@@ -39,7 +39,10 @@ app.use(cors());
 
 const pool = new Pool({
     // Reads from .env the PostgreSQL URL
-    connectionString: process.env.DATABASE_URL
+    connectionString: process.env.DATABASE_URL,
+    ssl: {
+        rejectUnauthorized: false
+    }
 });
 
 
