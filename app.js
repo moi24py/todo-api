@@ -32,6 +32,7 @@ app.use(express.json());
 // middleware that enables cross-origin rescource sharing on all the routes
 app.use(cors());
 
+
 // =================================
 // DB connection
 // =================================
@@ -41,3 +42,14 @@ const pool = new Pool({
     connectionString: process.env.DATABASE_URL
 });
 
+
+// =================================
+// ROUTE: Get /health
+// =================================
+// This endpoint checks if the server is up and running
+app.get('/health', (req, res) => {
+    res.json({
+        status: 'ok',
+        timestamp: new Date().toISOString()
+    });
+});
