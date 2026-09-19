@@ -32,3 +32,12 @@ app.use(express.json());
 // middleware that enables cross-origin rescource sharing on all the routes
 app.use(cors());
 
+// =================================
+// DB connection
+// =================================
+
+const pool = new Pool({
+    // Reads from .env the PostgreSQL URL
+    connectionString: process.env.DATABASE_URL
+});
+
