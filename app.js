@@ -217,3 +217,12 @@ app.use((req,res) => {
 });
 
 
+// =================================
+// Run the server
+// =================================
+
+const port = process.env.PORT || 3000;
+app.listen(PORT, () => {
+    console.log(`Server running on http://localhost:${PORT}`);
+    console.log(`Database: ${process.env.DATABASE_URL || 'postgresql://postgres:password@localhost:5432/todo_db'}`);
+});
