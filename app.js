@@ -116,7 +116,7 @@ app.post('/todos', async(req,res) => {
 
         const result = await pool.query(
             // Creates the new row and returns it to the client to let it know the ID
-            'INTERST TODO todos (title, completed) VALUES ($1, $2) RETURNING *',
+            'INSERT INTO todos (title, completed) VALUES ($1, $2) RETURNING *',
             [title.trim(), false]
         );
 
@@ -134,7 +134,7 @@ app.post('/todos', async(req,res) => {
 // Updates a todo (eg: mark as completed)
 // =================================
 
-app.put('/todos/:id', async(res,req) => {
+app.put('/todos/:id', async(req,res) => {
     try {
         const {id} = req.params;
         const {title, completed} = req.body;
@@ -169,7 +169,7 @@ app.put('/todos/:id', async(res,req) => {
 
         updateValues.push(id);
 
-        const query = `UPDATE todos SET ${updateFields.join(', ')} WHERE id = $${paramCount} RETURNING * }`;
+        const query = `UPDATE todos SET ${updateFields.join(', ')} WHERE id = $${paramCount} RETURNING * `;
 
         const result = await pool.query(query, updateValues);
 
@@ -187,7 +187,7 @@ app.put('/todos/:id', async(res,req) => {
 // Deletes a todo by ID
 // =================================
 
-app.delete('/todos/:id', async(res, req) => {
+app.delete('/todos/:id', async(req, res) => {
     try {
         const {id} = req.params;
         const existCheck = await pool.query(
