@@ -44,7 +44,7 @@ const pool = new Pool({
 
 
 // =================================
-// ROUTE: Get /health
+// ROUTE: GET /health
 // =================================
 // This endpoint checks if the server is up and running
 app.get('/health', (req, res) => {
@@ -53,3 +53,24 @@ app.get('/health', (req, res) => {
         timestamp: new Date().toISOString()
     });
 });
+
+
+// =================================
+// ROUTE: GET /todos
+// Retrieves the todos from the DB
+// =================================
+
+app.get('/todos', async(req,res) => {
+    try {
+        const result = await pool.query(
+            // Gets the todos sorted from the newest to the oldest
+            'SELECT * FROM todos ORDER BY created_at DESC'
+        );
+        res.json(result.rows); // array of objects, one for each DB row
+    } catch (error) {
+        console.error('Error fetching todos:', error);
+        res.status(500).json( {error: 'Failed to fetch todos'} );
+    }
+});
+
+
