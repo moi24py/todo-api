@@ -4,7 +4,7 @@ services:
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: password
-      POSTGRES_DV: todo_db
+      POSTGRES_DB: todo_db
     ports:
       - "5432:5432"
     volumes: 
