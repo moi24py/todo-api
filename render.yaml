@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: todo-api
+    runtime: node
+    buildCommand: npm ci
+    startCommand: node app.js
+    envVars:
+      - key: NODE_ENV
+        value: production
+  
+  - type: pserv
+    name: todo-postgres
+    ipAllowList: []
+    databaseName: todo_db
+    user: postgres
