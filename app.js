@@ -76,7 +76,8 @@ app.get('/todos', async(req,res) => {
 
 // =================================
 // ROUTE: GET /todos/:id
-// Retrieves the todo by ID. Eg: GET /todos/5 → id = '5'
+// Retrieves the todo by ID. 
+// Eg: GET /todos/5 → id = '5'
 // =================================
 app.get('/todos/:id', async(req,res) => {
     try {
@@ -96,6 +97,34 @@ app.get('/todos/:id', async(req,res) => {
     } catch (error) {
         console.error('Error fetching todo:', error);
         res.status(500).json( {error: 'Failed to fetch todo'} );
+    }
+});
+
+
+// =================================
+// ROUTE: POST /todos/
+// Creates a new todo
+// =================================
+app.post('/todos', async(req,res) => {
+    try {
+        const {title} = req.body;
+        if (!title || typeof title !== 'strng' || titolo.trim() === '') {
+            return res.status(400).json({
+                error: 'A title is required and must be a string'
+            });
+        }
+
+        const result = await pool.query(
+            // Creates the new row and returns it to the client to let it know the ID
+            'INTERST TODO todos (title, completed) VALUES ($1, $2) RETURNING *',
+            [title.trim(), false]
+        );
+
+        // Sends the new todo with its ID
+        res.status(201).json(result.rows[0]);
+    } catch (error) {
+        console.error('Error creating todo', error);
+        res.status(500).json( {error: 'Failed to create todo'} );
     }
 });
 
